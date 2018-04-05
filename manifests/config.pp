@@ -15,8 +15,8 @@ class central_auth::config (
   Boolean $ldap_id_mapping           = false,
   Boolean $cache_credentials         = true,
   Boolean $case_sensitive            = false,
-  String $override_shell             = '/bin/bash',
-  String $override_homedir           = '/home/%u',
+  Any $override_shell                = '/bin/bash',
+  Any $override_homedir              = '/home/%u',
 
   Integer $sssd_debug_level          = 0,
   String $ldap_uri                   = '',
@@ -76,9 +76,30 @@ class central_auth::config (
 
       $dr_arr = split($default_realm, '\.')
       $addomain = $dr_arr[0]
-      file { '/etc/samba/smb.conf':
-        ensure  => file,
-        content => epp($smb_template, { default_realm => $default_realm, addomain => $addomain }),
+      #file { '/etc/samba/smb.conf':
+      #ensure  => file,
+      #content => epp($smb_template, { default_realm => $default_realm, addomain => $addomain }),
+      #}
+      ini_setting { "smb workgroup":
+        ensure  => present,
+        path    => '/etc/samba/smb.conf',
+        section => 'global',
+        setting => 'workgroup',
+        value   => $addomain.upcase,
+      }
+      ini_setting { "smb realm":
+        ensure  => present,
+        path    => '/etc/samba/smb.conf',
+        section => 'global',
+        setting => 'realm',
+        value   => $default_realm.upcase,
+      }
+      ini_setting { "smb security":
+        ensure  => present,
+        path    => '/etc/samba/smb.conf',
+        section => 'global',
+        setting => 'security',
+        value   => 'ADS',
       }
 
     }

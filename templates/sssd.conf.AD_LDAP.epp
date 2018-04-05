@@ -69,10 +69,14 @@ ldap_group_name = sAMAccountName
 #ldap_krb5_ticket_lifetime = 86400
 #ldap_sasl_authid = host/<%= $hostname %>.<%= $domain.downcase %>@<%= $default_domain.downcase %>
 
+<% if $override_homedir { -%>
 override_homedir = <%= $override_homedir %>
 fallback_homedir = <%= $override_homedir %>
+<% } -%>
+<% if $override_shell { -%>
 override_shell = <%= $override_shell %>
 default_shell = <%= $override_shell %>
+<% } -%>
 
 #Bind credentials
 ldap_default_bind_dn = <%= $bind_user %>

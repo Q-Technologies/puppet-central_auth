@@ -14,7 +14,11 @@ ldap_id_mapping = <%= $ldap_id_mapping %>
 ldap_idmap_range_size = <%= $ldap_idmap_range_size %>
 ldap_schema = ad 
 cache_credentials = <%= $cache_credentials %>
+<% if $override_shell { -%>
 override_shell = <%= $override_shell %>
+<% } -%>
+<% if $override_homedir { -%>
 override_homedir = <%= $override_homedir %>
+<% } -%>
 # Use this until we get version 1.12 of sssd
 case_sensitive = <%= $case_sensitive %>

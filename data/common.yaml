@@ -1,2 +1,3 @@
 ---
 central_auth::install::packages: []
+central_auth::pam::min_user_id: 500
