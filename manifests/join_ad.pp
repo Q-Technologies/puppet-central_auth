@@ -9,7 +9,7 @@ class central_auth::join_ad (
 
   include stdlib;
 
-  if $central_auth::enable_sssd and $central_auth::directory_type == 'ad' {
+  if $central_auth::enable_sssd and $central_auth::config::directory_type == 'ad' {
 
     # Fail if the class parameters are still empty
     if empty($domain_user) or empty($domain_pass) or empty($domain_ou) {
