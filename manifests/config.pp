@@ -1,5 +1,5 @@
 
-class auth::config (
+class central_auth::config (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   String $default_domain,
   String $admin_server               = hiera( 'auth::config::default_domain' ),

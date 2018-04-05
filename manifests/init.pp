@@ -1,9 +1,9 @@
-# == Class: auth
+# == Class: central_auth
 #
 # A module to manage Authentication using SSSD and PAM
 #
 #
-class auth (
+class central_auth (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   Boolean $manage_auth                = true,
   Boolean $enable_sssd                = true,
@@ -34,15 +34,15 @@ class auth (
 
   if $manage_auth {
 
-    class { 'auth::install': }
+    class { 'central_auth::install': }
 
-    -> class { 'auth::config': }
+    -> class { 'central_auth::config': }
 
-    -> class { 'auth::pam': }
+    -> class { 'central_auth::pam': }
 
-    -> class { 'auth::join_ad': }
+    -> class { 'central_auth::join_ad': }
 
-    -> class { 'auth::service': }
+    -> class { 'central_auth::service': }
 
   }
 }

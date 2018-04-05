@@ -1,5 +1,5 @@
 
-class auth::join_ad (
+class central_auth::join_ad (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   String $domain_user = '',
   String $domain_pass = '',

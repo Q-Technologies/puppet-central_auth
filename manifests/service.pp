@@ -1,5 +1,5 @@
 
-class auth::service (
+class central_auth::service (
   # Class parameters are populated from External(hiera)/Defaults/Fail
 ) {
 

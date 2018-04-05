@@ -1,5 +1,5 @@
 
-class auth::install (
+class central_auth::install (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   Collection $packages = [],
   String $renew_host_krbtgt_script = '/usr/local/sbin/renew_host_krbtgt.sh',

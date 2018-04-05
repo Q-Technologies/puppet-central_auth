@@ -2,7 +2,7 @@
 #
 # Class to manage PAM for CrackLib and SSSD
 #
-class auth::pam (
+class central_auth::pam (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   Integer $dcredit                   = -1,
   Integer $difok                     = 5,
