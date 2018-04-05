@@ -1,5 +1,5 @@
 ---
-auth::install::packages: ['sssd', 'sssd-tools', 'krb5-user', 'python-pexpect', 'samba', 'samba-tools']
+central_auth::install::packages: ['sssd', 'sssd-tools', 'krb5-user', 'python-pexpect', 'samba', 'samba-tools']
 #- sssd-tools
 #- krb5-user
 #- samba-tools

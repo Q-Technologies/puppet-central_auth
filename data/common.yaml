@@ -1,2 +1,2 @@
 ---
-auth::install::packages: []
+central_auth::install::packages: []
