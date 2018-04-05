@@ -19,7 +19,7 @@ class central_auth::config (
   String $override_homedir           = '/home/%u',
 
   Integer $sssd_debug_level          = 0,
-  String $ldap_uri,
+  String $ldap_uri                   = '',
   String $user_ou_path               = '',
   String $group_ou_path              = '',
   String $bind_user                  = '',
