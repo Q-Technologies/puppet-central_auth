@@ -5,7 +5,7 @@
 #
 class central_auth (
   # Class parameters are populated from External(hiera)/Defaults/Fail
-  Boolean $manage_auth                = true,
+  Boolean $manage_auth                = false,
   Boolean $enable_sssd                = true,
 ) {
 
