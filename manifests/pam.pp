@@ -1,4 +1,4 @@
-# == Class: auth::pam
+# == Class: central_auth::pam
 #
 # Class to manage PAM for CrackLib and SSSD
 #
@@ -11,7 +11,7 @@ class central_auth::pam (
   Integer $ocredit                   = -1,
   Integer $minlen                    = 17,
 
-  Boolean $enable_sssd                = $auth::enable_sssd,
+  Boolean $enable_sssd                = $central_auth::enable_sssd,
 
 ){
 
@@ -26,7 +26,7 @@ class central_auth::pam (
   if $::osfamily == 'RedHat' {
     file { [ '/etc/pam.d/system-auth', '/etc/pam.d/password-auth' ] :
       ensure  => file,
-      content => epp('auth/rhel-pam-auth', { enable_sssd => $enable_sssd,
+      content => epp('central_auth/rhel-pam-auth', { enable_sssd => $enable_sssd,
                                              dcredit     => $dcredit,
                                              difok       => $difok,
                                              lcredit     => $lcredit,
