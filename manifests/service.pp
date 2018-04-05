@@ -10,7 +10,7 @@ class central_auth::service (
     $messagebus = 'dbus'
   }
 
-  if $auth::enable_sssd {
+  if $central_auth::enable_sssd {
     $service_state = 'running'
   } else {
     $service_state = 'stopped'
@@ -18,11 +18,11 @@ class central_auth::service (
 
   service { 'sssd':
     ensure => $service_state,
-    enable => $auth::enable_sssd,
+    enable => $central_auth::enable_sssd,
     tag    => undef,
   }
 
-  if $::osfamily == "RedHat" and $auth::enable_sssd {
+  if $::osfamily == "RedHat" and $central_auth::enable_sssd {
     service { 'oddjobd':
       ensure  => running,
       enable  => true,

@@ -9,11 +9,11 @@ class central_auth::join_ad (
 
   include stdlib;
 
-  if $auth::enable_sssd and $auth::directory_type == 'ad' {
+  if $central_auth::enable_sssd and $central_auth::directory_type == 'ad' {
 
     # Fail if the class parameters are still empty
     if empty($domain_user) or empty($domain_pass) or empty($domain_ou) {
-      fail('auth::join_ad needs domain_user, domain_pass and domain_ou set')
+      fail('central_auth::join_ad needs domain_user, domain_pass and domain_ou set')
     }
 
     # Put the Python expect wrapper in place for kinit command
@@ -22,7 +22,7 @@ class central_auth::join_ad (
       owner   => "root",
       group   => "root",
       mode    => '0755',
-      content => epp('auth/kinit_wrapper.py', { default_realm => $auth::config::default_realm } ),
+      content => epp('central_auth/kinit_wrapper.py', { default_realm => $central_auth::config::default_realm } ),
     }
     # Run kinit command
     -> exec { 'first kinit':

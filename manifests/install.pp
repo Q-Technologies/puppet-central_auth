@@ -12,20 +12,20 @@ class central_auth::install (
     ensure => present,
   }
 
-  if $auth::enable_sssd {
+  if $central_auth::enable_sssd {
     file { $clean_sssd_cache_script:
       ensure => 'present',
       owner => 'root',
       group  => 'root',
       mode  => '0775',
-      source => 'puppet:///modules/auth/clean_sssd_cache.sh',
+      source => 'puppet:///modules/central_auth/clean_sssd_cache.sh',
     }
     file { $renew_host_krbtgt_script:
       ensure => file,
       owner => 'root',
       group  => 'root',
       mode  => '0744',
-      source => 'puppet:///modules/auth/renew_host_krbtgt.sh',
+      source => 'puppet:///modules/central_auth/renew_host_krbtgt.sh',
     }
     #$cronhour = fqdn_rand(6) + 11 
     $cronhour = '*'

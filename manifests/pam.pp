@@ -38,7 +38,7 @@ class central_auth::pam (
   } elsif $::osfamily == 'Suse' {
     file { '/etc/pam.d/common-password':
       ensure  => file,
-      content => epp('auth/suse-pam-password', { enable_sssd => $enable_sssd,
+      content => epp('central_auth/suse-pam-password', { enable_sssd => $enable_sssd,
                                                  dcredit     => $dcredit,
                                                  difok       => $difok,
                                                  lcredit     => $lcredit,
@@ -49,7 +49,7 @@ class central_auth::pam (
     }
     file { '/etc/pam.d/common-auth':
       ensure  => file,
-      content => epp('auth/suse-pam-auth', { enable_sssd => $enable_sssd,
+      content => epp('central_auth/suse-pam-auth', { enable_sssd => $enable_sssd,
                                              dcredit     => $dcredit,
                                              difok       => $difok,
                                              lcredit     => $lcredit,
@@ -60,7 +60,7 @@ class central_auth::pam (
     }
     file { '/etc/pam.d/common-account':
       ensure  => file,
-      content => epp('auth/suse-pam-account', {  enable_sssd => $enable_sssd,
+      content => epp('central_auth/suse-pam-account', {  enable_sssd => $enable_sssd,
                                                  dcredit     => $dcredit,
                                                  difok       => $difok,
                                                  lcredit     => $lcredit,
@@ -71,7 +71,7 @@ class central_auth::pam (
     }
     file { '/etc/pam.d/common-session':
       ensure  => file,
-      content => epp('auth/suse-pam-session', {  enable_sssd => $enable_sssd,
+      content => epp('central_auth/suse-pam-session', {  enable_sssd => $enable_sssd,
                                                  dcredit     => $dcredit,
                                                  difok       => $difok,
                                                  lcredit     => $lcredit,
@@ -83,31 +83,31 @@ class central_auth::pam (
   } elsif $::osfamily == 'Debian' {
     file { '/etc/pam.d/login':
       ensure  => file,
-      content => epp('auth/debian-pam-login', {} ),
+      content => epp('central_auth/debian-pam-login', {} ),
     }
     file { '/etc/pam.d/sshd':
       ensure  => file,
-      content => epp('auth/debian-pam-sshd', {} ),
+      content => epp('central_auth/debian-pam-sshd', {} ),
     }
     file { '/etc/pam.d/common-password':
       ensure  => file,
-      content => epp('auth/debian-pam-password', { enable_sssd => $enable_sssd } ),
+      content => epp('central_auth/debian-pam-password', { enable_sssd => $enable_sssd } ),
     }
     file { '/etc/pam.d/common-auth':
       ensure  => file,
-      content => epp('auth/debian-pam-auth', { enable_sssd => $enable_sssd } ),
+      content => epp('central_auth/debian-pam-auth', { enable_sssd => $enable_sssd } ),
     }
     file { '/etc/pam.d/common-account':
       ensure  => file,
-      content => epp('auth/debian-pam-account', {  enable_sssd => $enable_sssd } ),
+      content => epp('central_auth/debian-pam-account', {  enable_sssd => $enable_sssd } ),
     }
     file { '/etc/pam.d/common-session':
       ensure  => file,
-      content => epp('auth/debian-pam-session', {  enable_sssd => $enable_sssd } ),
+      content => epp('central_auth/debian-pam-session', {  enable_sssd => $enable_sssd } ),
     }
     file { '/etc/pam.d/common-session-noninteractive':
       ensure  => file,
-      content => epp('auth/debian-pam-session-noninteractive', {  enable_sssd => $enable_sssd } ),
+      content => epp('central_auth/debian-pam-session-noninteractive', {  enable_sssd => $enable_sssd } ),
     }
     
   }

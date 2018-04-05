@@ -2,8 +2,8 @@
 class central_auth::config (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   String $default_domain,
-  String $admin_server               = hiera( 'auth::config::default_domain' ),
-  String $default_realm              = hiera( 'auth::config::default_domain' ),
+  String $admin_server               = hiera( 'central_auth::config::default_domain' ),
+  String $default_realm              = hiera( 'central_auth::config::default_domain' ),
   Boolean $dns_lookup_kdc            = true,
   Boolean $dns_lookup_realm          = true,
   Boolean $forwardable               = true,
@@ -23,9 +23,9 @@ class central_auth::config (
   String $user_ou_path               = '',
   String $group_ou_path              = '',
   String $bind_user                  = '',
-  String $bind_pass                  = hiera( 'auth::join_ad::domain_pass','' ),
+  String $bind_pass                  = hiera( 'central_auth::join_ad::domain_pass','' ),
 
-  String $smb_template               = 'auth/smb.conf',
+  String $smb_template               = 'central_auth/smb.conf',
 ) {
 
   File {
@@ -37,21 +37,21 @@ class central_auth::config (
   if ( $::osfamily == "Suse" and ($::operatingsystemmajrelease + 0) < 12 )
     or ( $facts['os']['name'] == 'Ubuntu' and ($::operatingsystemmajrelease + 0) < 13 ) {
     if $directory_type == "ad" {
-      $sssd_template = 'auth/sssd.conf.AD_LDAP'
+      $sssd_template = 'central_auth/sssd.conf.AD_LDAP'
     } elsif $directory_type == "openldap" {
-      $sssd_template = 'auth/sssd.conf.OPENLDAP'
+      $sssd_template = 'central_auth/sssd.conf.OPENLDAP'
     } else{
         fail("Unknown directory type: ${directory_type}")
     }
-    #$krb5_template = 'auth/krb5.conf.LDAP'
-    $krb5_template = 'auth/krb5.conf.AD'
+    #$krb5_template = 'central_auth/krb5.conf.LDAP'
+    $krb5_template = 'central_auth/krb5.conf.AD'
   } else {
-    $sssd_template = 'auth/sssd.conf.AD'
-    $krb5_template = 'auth/krb5.conf.AD'
+    $sssd_template = 'central_auth/sssd.conf.AD'
+    $krb5_template = 'central_auth/krb5.conf.AD'
   }
 
 
-  if $auth::enable_sssd {
+  if $central_auth::enable_sssd {
 
     if $directory_type == "ad" {
       # When connecting to AD, utilise Kerberos and set up Samba client
@@ -125,14 +125,14 @@ class central_auth::config (
     if $::osfamily == "RedHat" {
       file { '/etc/oddjobd.conf.d/oddjobd-mkhomedir.conf':
         ensure => file,
-        source => 'puppet:///modules/auth/oddjobd-mkhomedir.conf',
+        source => 'puppet:///modules/central_auth/oddjobd-mkhomedir.conf',
         notify => Service['oddjobd'],
       }
     }
 
     file { '/etc/nsswitch.conf':
       ensure  => file,
-      content  => epp('auth/nsswitch.conf'),
+      content  => epp('central_auth/nsswitch.conf'),
       require => File['/etc/sssd/sssd.conf'],
     }
 
