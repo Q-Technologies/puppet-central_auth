@@ -36,7 +36,7 @@ class central_auth::pam (
                                                      ocredit     => $ocredit,
                                                      minlen      => $minlen,
                                                      min_user_id => $min_user_id,
-                                                 } ),
+                                                   } ),
     }
   } elsif $::osfamily == 'Suse' {
     file { '/etc/pam.d/common-password':
@@ -72,7 +72,7 @@ class central_auth::pam (
                                                          ocredit     => $ocredit,
                                                          minlen      => $minlen,
                                                          min_user_id => $min_user_id,
-                                                       } ),
+                                                      } ),
     }
     file { '/etc/pam.d/common-session':
       ensure  => file,
@@ -83,7 +83,7 @@ class central_auth::pam (
                                                          ucredit     => $ucredit,
                                                          ocredit     => $ocredit,
                                                          minlen      => $minlen,
-                                                       } ),
+                                                      } ),
     }
   } elsif $::osfamily == 'Debian' {
     file { '/etc/pam.d/login':
