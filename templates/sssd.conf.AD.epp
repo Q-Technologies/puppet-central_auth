@@ -1,0 +1,20 @@
+# FILE MANAGED BY PUPPET #
+[sssd]
+debug_level = 9
+domains = <%= $default_domain.downcase %>
+services = nss, pam
+config_file_version = 2
+
+[domain/<%= $default_domain.downcase %>]
+debug_level = 9
+ad_domain = <%= $default_domain.downcase %>
+id_provider = ad
+access_provider = ad
+ldap_id_mapping = <%= $ldap_id_mapping %>
+ldap_idmap_range_size = <%= $ldap_idmap_range_size %>
+ldap_schema = ad 
+cache_credentials = <%= $cache_credentials %>
+override_shell = <%= $override_shell %>
+override_homedir = <%= $override_homedir %>
+# Use this until we get version 1.12 of sssd
+case_sensitive = <%= $case_sensitive %>

@@ -1,0 +1,32 @@
+# THIS FILE IS MANAGED BY PUPPET #
+auth        required      pam_env.so
+auth        sufficient    pam_unix.so nullok try_first_pass
+auth        requisite     pam_succeed_if.so uid >= 500 quiet
+<% if $enable_sssd { -%>
+auth        sufficient    pam_sss.so use_first_pass
+<% } -%>
+auth        required      pam_deny.so
+
+account     required      pam_unix.so
+account     sufficient    pam_localuser.so
+account     sufficient    pam_succeed_if.so uid < 500 quiet
+<% if $enable_sssd { -%>
+account     [default=bad success=ok user_unknown=ignore] pam_sss.so
+<% } -%>
+account     required      pam_permit.so
+
+password    requisite     pam_cracklib.so try_first_pass retry=3 type= lcredit=<%= $lcredit %> ucredit=<%= $ucredit %> dcredit=<%= $dcredit %> ocredit=<%= $ocredit %> minlen=<%= $minlen %> difok=<%= $difok %>
+password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
+<% if $enable_sssd { -%>
+password    sufficient    pam_sss.so use_authtok
+<% } -%>
+password    required      pam_deny.so
+
+session     optional      pam_keyinit.so revoke
+session     required      pam_limits.so
+session     optional      pam_oddjob_mkhomedir.so umask=0077
+session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
+<% if $enable_sssd { -%>
+session     sufficient    pam_sss.so
+<% } -%>
+session     required      pam_unix.so

@@ -1,0 +1,2 @@
+---
+auth::install::packages: ['sssd', 'sssd-client', 'sssd-common', 'oddjob', 'oddjob-mkhomedir', 'krb5-workstation', 'pexpect', 'samba-common', 'samba-common-tools']

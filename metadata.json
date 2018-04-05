@@ -1,0 +1,56 @@
+{
+  "name": "qtechnologies-central_auth",
+  "version": "0.1.0",
+  "author": "Q-Technologies",
+  "summary": "A Module to manage centralized authentication",
+  "license": "Apache 2.0",
+  "source": "https://github.com/Q-Technologies/puppet-central_auth.git",
+  "project_page": "https://github.com/Q-Technologies/puppet-central_auth",
+  "issues_url": "https://github.com/Q-Technologies/puppet-central_auth/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 4.24.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem":"RedHat",
+      "operatingsystemrelease": [
+        "6.0",
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem":"Centos",
+      "operatingsystemrelease": [
+        "6.0",
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem":"OEL",
+      "operatingsystemrelease": [
+        "6.0",
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem":"SLES",
+      "operatingsystemrelease": [
+        "11.0",
+        "12.0"
+      ]
+    },
+    {
+      "operatingsystem":"Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04",
+        "16.04"
+      ]
+    }
+  ],
+  "data_provider": "hiera"
+}
+

@@ -1,0 +1,8 @@
+# File Managed by Puppet
+account	[success=1 new_authtok_reqd=done default=ignore]	pam_unix.so
+account	requisite			                                pam_deny.so
+account	required			                                pam_permit.so
+account	sufficient					                        pam_localuser.so
+<% if $enable_sssd { -%>
+account	[default=bad success=ok user_unknown=ignore]	    pam_sss.so
+<% } -%>

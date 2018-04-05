@@ -1,0 +1,9 @@
+[global]
+  workgroup = <%= $addomain.upcase %>
+  client signing = auto
+  client use spnego = yes
+  realm = <%= $default_realm.upcase %>
+  kerberos method = secrets and keytab
+  server string = Samba Server Version %v
+  security = ADS
+

@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+import os
+import sys
+import pexpect
+from subprocess import call
+
+username = str ( os.environ['DOMAIN_USER'] )
+password = str ( os.environ['DOMAIN_PASS'] )
+
+child = pexpect.spawn('kinit '+ username)
+child.expect('<%= $default_realm.upcase %>: ')
+child.sendline(password)
+child.wait()
+
+if child.exitstatus == 0:
+    print 'Success: kinit succeeded'
+    sys.exit(0)
+
+else:
+    print 'Error: kinit failed'
+    sys.exit(1)

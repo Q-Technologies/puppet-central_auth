@@ -1,0 +1,40 @@
+# FILE MANAGED BY PUPPET #
+[sssd]
+debug_level = <%= $debug_level %>
+domains = <%= $default_domain.downcase %>
+reconnection_retries = 3
+services = nss, pam
+config_file_version = 2
+sbus_timeout = 30
+
+[nss]
+filter_groups = root
+filter_users = root
+reconnection_retries = 3
+debug_level = <%= $debug_level %>
+
+[pam]
+reconnection_retries = 3
+debug_level = <%= $debug_level %>
+
+[domain/<%= $default_domain.downcase %>]
+debug_level = <%= $debug_level %>
+description = LDAP domain with AD server
+enumerate = true
+cache_credentials = <%= $cache_credentials %>
+
+id_provider = ldap
+auth_provider = ldap
+chpass_provider = ldap
+
+ldap_uri = <%= $ldap_uri %>
+ldap_search_base = <%= $dc %>
+ldap_chpass_uri = <%= split($ldap_uri, ',')[0] %>
+entry_cache_timeout = 600
+ldap_network_timeout = 2
+ldap_group_member = uniquemember
+ldap_tls_cacert = /etc/ssl/certs/twptonpki02vth_issuingCA_Base64.cer
+#This parameter requires that the DC present a completely validated certificate chain. If you're testing or don't care, use 'allow' or 'never'.
+#ldap_tls_reqcert = demand
+ldap_tls_reqcert = allow
+

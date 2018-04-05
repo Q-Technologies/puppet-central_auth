@@ -1,0 +1,36 @@
+[libdefaults]
+    default_realm = <%= $default_realm.upcase %>
+    dns_lookup_realm = <%= $dns_lookup_realm %>
+    dns_lookup_kdc = <%= $dns_lookup_kdc %>
+    ticket_lifetime = <%= $ticket_lifetime %>
+    renew_lifetime = <%= $renew_lifetime %>
+    forwardable = <%= $forwardable %>
+    rdns = false
+    clockskew = 300
+
+[realms]
+    <%= $default_realm.upcase %> = {
+        kdc = <%= $admin_server.upcase %>
+        default_domain = <%= $default_domain.downcase %>
+        admin_server = <%= $admin_server.downcase %>
+    }
+
+[logging]
+    kdc = FILE:/var/log/krb5/krb5kdc.log
+    admin_server = FILE:/var/log/krb5/kadmind.log
+    default = SYSLOG:NOTICE:DAEMON
+
+[domain_realm]
+.<%= $default_realm.upcase %> = <%= $default_realm.downcase %>
+<%= $default_realm.upcase %> = <%= $default_realm.downcase %>
+
+[appdefaults]
+    pam = {
+        ticket_lifetime = <%= $ticket_lifetime %>
+        renew_lifetime = <%= $ticket_lifetime %>
+        forwardable = <%= $forwardable %>
+        proxiable = false
+        minimum_uid = 1
+        external = sshd
+        use_shmem = sshd
+    }

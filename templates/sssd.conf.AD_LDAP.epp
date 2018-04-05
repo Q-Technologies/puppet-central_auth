@@ -1,0 +1,79 @@
+# FILE MANAGED BY PUPPET #
+[sssd]
+debug_level = <%= $debug_level %>
+domains = <%= $default_domain.downcase %>
+reconnection_retries = 3
+services = nss, pam
+config_file_version = 2
+sbus_timeout = 30
+
+[nss]
+filter_groups = root
+filter_users = root
+reconnection_retries = 3
+debug_level = <%= $debug_level %>
+
+[pam]
+reconnection_retries = 3
+debug_level = <%= $debug_level %>
+
+[domain/<%= $default_domain.downcase %>]
+debug_level = <%= $debug_level %>
+description = LDAP domain with AD server
+enumerate = false
+cache_credentials = <%= $cache_credentials %>
+
+id_provider = ldap
+auth_provider = ldap
+chpass_provider = ldap
+access_provider = ldap
+
+ldap_uri = <%= $ldap_uri %>
+ldap_search_base = <%= $dc %>
+#ldap_tls_cacert = /etc/ssl/certs/ca-certificates.crt
+#This parameter requires that the DC present a completely validated certificate chain. If you're testing or don't care, use 'allow' or 'never'.
+#ldap_tls_reqcert = demand
+ldap_tls_reqcert = allow
+
+#krb5_realm = <%= $default_domain.upcase %>
+dns_discovery_domain = <%= $default_domain.upcase %>
+#krb5_server = <%= $admin_server %>
+
+ldap_schema = rfc2307bis
+ldap_access_order = expire
+ldap_account_expire_policy = ad
+ldap_force_upper_case_realm = true
+
+min_id = 1000
+ldap_id_mapping = <%= $ldap_id_mapping %>
+ldap_idmap_range_size = <%= $ldap_idmap_range_size %>
+# Use this until we get version 1.12 of sssd
+case_sensitive = <%= $case_sensitive %>
+
+ldap_user_search_base = <%= $user_ou_path %><% if !empty($user_ou_path) { %>,<% } %><%= $dc %>
+ldap_user_object_class = user
+ldap_user_fullname = displayName
+ldap_user_name = sAMAccountName
+ldap_user_home_directory = unixHomeDirectory
+ldap_user_principal = userPrincipalName
+ldap_user_shell = LoginShell
+
+ldap_group_search_base = <%= $group_ou_path %><% if !empty($group_ou_path) { %>,<% } %><%= $dc %>
+ldap_group_object_class = group
+ldap_group_name = sAMAccountName
+
+
+#ldap_sasl_mech = gssapi
+#ldap_krb5_init_creds = true
+#ldap_krb5_keytab = /etc/krb5.keytab
+#ldap_krb5_ticket_lifetime = 86400
+#ldap_sasl_authid = host/<%= $hostname %>.<%= $domain.downcase %>@<%= $default_domain.downcase %>
+
+override_homedir = <%= $override_homedir %>
+fallback_homedir = <%= $override_homedir %>
+override_shell = <%= $override_shell %>
+default_shell = <%= $override_shell %>
+
+#Bind credentials
+ldap_default_bind_dn = <%= $bind_user %>
+ldap_default_authtok = <%= $bind_pass %>

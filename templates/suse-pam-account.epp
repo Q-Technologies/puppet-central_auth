@@ -1,0 +1,8 @@
+account     required      pam_unix.so
+account     sufficient    pam_localuser.so
+account     sufficient    pam_succeed_if.so uid < 500 quiet
+<% if $enable_sssd { -%>
+account     [default=bad success=ok user_unknown=ignore] pam_sss.so
+<% } -%>
+account     required      pam_permit.so
+

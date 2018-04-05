@@ -1,0 +1,2 @@
+---
+auth::install::packages: ['sssd', 'sssd-ad-provider', 'krb5', 'krb5-client', 'pam_krb5', 'sssd-tools', 'python-pexpect', 'cyrus-sasl-gssapi']
