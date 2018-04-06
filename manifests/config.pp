@@ -4,6 +4,7 @@ class central_auth::config (
   String $default_domain,
   String $admin_server               = hiera( 'central_auth::config::default_domain' ),
   String $default_realm              = hiera( 'central_auth::config::default_domain' ),
+  Collection $passwd_servers         = [],
   Boolean $dns_lookup_kdc            = true,
   Boolean $dns_lookup_realm          = true,
   Boolean $forwardable               = true,
@@ -100,6 +101,15 @@ class central_auth::config (
         section => 'global',
         setting => 'security',
         value   => 'ADS',
+      }
+      if !empty($passwd_servers) {
+        ini_setting { "smb password server":
+          ensure  => present,
+          path    => '/etc/samba/smb.conf',
+          section => 'global',
+          setting => 'password server',
+          value   => $passwd_servers.join(' '),
+        }
       }
 
     }
