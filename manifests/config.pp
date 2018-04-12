@@ -81,6 +81,13 @@ class central_auth::config (
       #ensure  => file,
       #content => epp($smb_template, { default_realm => $default_realm, addomain => $addomain }),
       #}
+      ini_setting { "smb kerberos method":
+        ensure  => present,
+        path    => '/etc/samba/smb.conf',
+        section => 'global',
+        setting => 'kerberos method',
+        value   => 'secrets and keytab',
+      }
       ini_setting { "smb workgroup":
         ensure  => present,
         path    => '/etc/samba/smb.conf',
