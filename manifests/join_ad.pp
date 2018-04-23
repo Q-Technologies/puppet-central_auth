@@ -1,4 +1,5 @@
 
+# Class to perform the AD join for central_auth
 class central_auth::join_ad (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   String $domain_user = '',
@@ -17,10 +18,10 @@ class central_auth::join_ad (
     }
 
     # Put the Python expect wrapper in place for kinit command
-    file { "/usr/local/sbin/kinit_wrapper.py":
-      ensure  => "present",
-      owner   => "root",
-      group   => "root",
+    file { '/usr/local/sbin/kinit_wrapper.py':
+      ensure  => 'present',
+      owner   => 'root',
+      group   => 'root',
       mode    => '0755',
       content => epp('central_auth/kinit_wrapper.py', { default_realm => $central_auth::config::default_realm } ),
     }
@@ -39,14 +40,14 @@ class central_auth::join_ad (
       command     => "/usr/bin/net ads join createcomputer=\"${domain_ou}\" -U \$DOMAIN_USER%\$DOMAIN_PASS 2>&1",
       notify      => Service['sssd'],
     }
-    
+
     # Obtain Kerboros ticket based on hostname
     [1,2,3,4,5,6,7,8,9,10].each | Integer $i | {
       exec { "try ${i} for machine ticket":
         path        => '/usr/bin:/usr/sbin:/bin:/sbin',
         command     => 'sleep 5 && kinit -k $(hostname -s | tr \'[a-z]\' \'[A-Z]\')$ || bash -c "exit 0"',
         onlyif      => "klist -l | grep krb5cc_0 | grep -i ${domain_user} >/dev/null",
-        environment => [ "DOMAIN_USER=${domain_user}", "DOMAIN_PASS=${domain_pass}", "KRB5CCNAME=/tmp/krb5cc_0" ],
+        environment => [ "DOMAIN_USER=${domain_user}", "DOMAIN_PASS=${domain_pass}", 'KRB5CCNAME=/tmp/krb5cc_0' ],
         require     => Exec['net join'],
         notify      => Service['sssd'],
       }

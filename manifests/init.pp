@@ -1,8 +1,6 @@
 # == Class: central_auth
 #
 # A module to manage Authentication using SSSD and PAM
-#
-#
 class central_auth (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   Boolean $manage_auth                = false,
@@ -10,8 +8,8 @@ class central_auth (
   Boolean $enable_pam_access          = false,
 ) {
 
-  case $osfamily {
-    'Suse': { 
+  case $facts['osfamily'] {
+    'Suse': {
       if ($::operatingsystemmajrelease + 0) < 11 {
         fail("Wrong SLES version, should be 11 or greater than 11, not ${::operatingsystemmajrelease}")
       }
@@ -22,14 +20,14 @@ class central_auth (
       }
     }
     'Debian': {
-      if ($::operatingsystemmajrelease + 0) < 7 and $operatingsystem == 'Debian' {
+      if ($::operatingsystemmajrelease + 0) < 7 and $facts['operatingsystem'] == 'Debian' {
         fail("Wrong Debian version, should be 7 or greater than 7, not ${::operatingsystemmajrelease}")
-      } elsif ($::operatingsystemmajrelease + 0) < 12 and $operatingsystem == 'Ubuntu' {
+      } elsif ($::operatingsystemmajrelease + 0) < 12 and $facts['operatingsystem'] == 'Ubuntu' {
         fail("Wrong Debian version, should be 12 or greater than 12, not ${::operatingsystemmajrelease}")
       }
     }
-    default: { 
-      fail("Wrong OS Family, should be RedHat, Debian or Suse, not ${::osfamily}") 
+    default: {
+      fail("Wrong OS Family, should be RedHat, Debian or Suse, not ${::osfamily}")
     }
   }
 

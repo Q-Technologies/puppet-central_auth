@@ -4,6 +4,9 @@
 #
 class central_auth::pam (
   # Class parameters are populated from External(hiera)/Defaults/Fail
+  Integer $min_user_id,
+  String $access_conf,
+
   Integer $dcredit                   = -1,
   Integer $difok                     = 5,
   Integer $lcredit                   = -1,
@@ -11,12 +14,8 @@ class central_auth::pam (
   Integer $ocredit                   = -1,
   Integer $minlen                    = 17,
 
-  Integer $min_user_id,
-
   Boolean $enable_sssd               = $central_auth::enable_sssd,
   Boolean $enable_pam_access         = $central_auth::enable_pam_access,
-
-  String $access_conf,
 
 ){
 
@@ -36,16 +35,17 @@ class central_auth::pam (
   if $::osfamily == 'RedHat' {
     file { [ '/etc/pam.d/system-auth', '/etc/pam.d/password-auth' ] :
       ensure  => file,
-      content => epp('central_auth/rhel-pam-auth', { enable_pam_access => $enable_pam_access,
-                                                     enable_sssd => $enable_sssd,
-                                                     dcredit     => $dcredit,
-                                                     difok       => $difok,
-                                                     lcredit     => $lcredit,
-                                                     ucredit     => $ucredit,
-                                                     ocredit     => $ocredit,
-                                                     minlen      => $minlen,
-                                                     min_user_id => $min_user_id,
-                                                   } ),
+      content => epp('central_auth/rhel-pam-auth', {
+                                                    enable_pam_access => $enable_pam_access,
+                                                    enable_sssd       => $enable_sssd,
+                                                    dcredit           => $dcredit,
+                                                    difok             => $difok,
+                                                    lcredit           => $lcredit,
+                                                    ucredit           => $ucredit,
+                                                    ocredit           => $ocredit,
+                                                    minlen            => $minlen,
+                                                    min_user_id       => $min_user_id,
+                                                  } ),
     }
     if $enable_pam_access {
       file { $access_conf:
@@ -56,48 +56,52 @@ class central_auth::pam (
   } elsif $::osfamily == 'Suse' {
     file { '/etc/pam.d/common-password':
       ensure  => file,
-      content => epp('central_auth/suse-pam-password', { enable_sssd => $enable_sssd,
-                                                         dcredit     => $dcredit,
-                                                         difok       => $difok,
-                                                         lcredit     => $lcredit,
-                                                         ucredit     => $ucredit,
-                                                         ocredit     => $ocredit,
-                                                         minlen      => $minlen,
-                                                       } ),
+      content => epp('central_auth/suse-pam-password', {
+                                                        enable_sssd => $enable_sssd,
+                                                        dcredit     => $dcredit,
+                                                        difok       => $difok,
+                                                        lcredit     => $lcredit,
+                                                        ucredit     => $ucredit,
+                                                        ocredit     => $ocredit,
+                                                        minlen      => $minlen,
+                                                      } ),
     }
     file { '/etc/pam.d/common-auth':
       ensure  => file,
-      content => epp('central_auth/suse-pam-auth', { enable_sssd => $enable_sssd,
-                                                     dcredit     => $dcredit,
-                                                     difok       => $difok,
-                                                     lcredit     => $lcredit,
-                                                     ucredit     => $ucredit,
-                                                     ocredit     => $ocredit,
-                                                     minlen      => $minlen,
-                                                     min_user_id => $min_user_id,
-                                                   } ),
+      content => epp('central_auth/suse-pam-auth', {
+                                                    enable_sssd => $enable_sssd,
+                                                    dcredit     => $dcredit,
+                                                    difok       => $difok,
+                                                    lcredit     => $lcredit,
+                                                    ucredit     => $ucredit,
+                                                    ocredit     => $ocredit,
+                                                    minlen      => $minlen,
+                                                    min_user_id => $min_user_id,
+                                                  } ),
     }
     file { '/etc/pam.d/common-account':
       ensure  => file,
-      content => epp('central_auth/suse-pam-account', {  enable_sssd => $enable_sssd,
-                                                         dcredit     => $dcredit,
-                                                         difok       => $difok,
-                                                         lcredit     => $lcredit,
-                                                         ucredit     => $ucredit,
-                                                         ocredit     => $ocredit,
-                                                         minlen      => $minlen,
-                                                         min_user_id => $min_user_id,
+      content => epp('central_auth/suse-pam-account', {
+                                                        enable_sssd => $enable_sssd,
+                                                        dcredit     => $dcredit,
+                                                        difok       => $difok,
+                                                        lcredit     => $lcredit,
+                                                        ucredit     => $ucredit,
+                                                        ocredit     => $ocredit,
+                                                        minlen      => $minlen,
+                                                        min_user_id => $min_user_id,
                                                       } ),
     }
     file { '/etc/pam.d/common-session':
       ensure  => file,
-      content => epp('central_auth/suse-pam-session', {  enable_sssd => $enable_sssd,
-                                                         dcredit     => $dcredit,
-                                                         difok       => $difok,
-                                                         lcredit     => $lcredit,
-                                                         ucredit     => $ucredit,
-                                                         ocredit     => $ocredit,
-                                                         minlen      => $minlen,
+      content => epp('central_auth/suse-pam-session', {
+                                                        enable_sssd => $enable_sssd,
+                                                        dcredit     => $dcredit,
+                                                        difok       => $difok,
+                                                        lcredit     => $lcredit,
+                                                        ucredit     => $ucredit,
+                                                        ocredit     => $ocredit,
+                                                        minlen      => $minlen,
                                                       } ),
     }
   } elsif $::osfamily == 'Debian' {
@@ -129,7 +133,7 @@ class central_auth::pam (
       ensure  => file,
       content => epp('central_auth/debian-pam-session-noninteractive', {  enable_sssd => $enable_sssd } ),
     }
-    
+
   }
 
 }
