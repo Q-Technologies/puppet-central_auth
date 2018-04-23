@@ -14,6 +14,9 @@ class central_auth::pam (
   Integer $min_user_id,
 
   Boolean $enable_sssd               = $central_auth::enable_sssd,
+  Boolean $enable_pam_access         = $central_auth::enable_pam_access,
+
+  String $access_conf,
 
 ){
 
@@ -23,12 +26,18 @@ class central_auth::pam (
     mode  => '0644',
   }
 
+  $allowed_groups = lookup('central_auth::pam::allowed_groups', Any, deep, {})
+  $allowed_users = lookup('central_auth::pam::allowed_users', Any, deep, {})
+  #notify { "allowed_groups: $allowed_groups": }
+  #notify { "allowed_users: $allowed_users": }
+
   #class { 'authconfig': }
 
   if $::osfamily == 'RedHat' {
     file { [ '/etc/pam.d/system-auth', '/etc/pam.d/password-auth' ] :
       ensure  => file,
-      content => epp('central_auth/rhel-pam-auth', { enable_sssd => $enable_sssd,
+      content => epp('central_auth/rhel-pam-auth', { enable_pam_access => $enable_pam_access,
+                                                     enable_sssd => $enable_sssd,
                                                      dcredit     => $dcredit,
                                                      difok       => $difok,
                                                      lcredit     => $lcredit,
@@ -37,6 +46,12 @@ class central_auth::pam (
                                                      minlen      => $minlen,
                                                      min_user_id => $min_user_id,
                                                    } ),
+    }
+    if $enable_pam_access {
+      file { $access_conf:
+        ensure  => file,
+        content => epp('central_auth/access.conf', { allowed_groups => $allowed_groups, allowed_users => $allowed_users } ),
+      }
     }
   } elsif $::osfamily == 'Suse' {
     file { '/etc/pam.d/common-password':

@@ -1,3 +1,5 @@
 ---
-central_auth::install::packages: []
+central_auth::install::packages: [ 'pam' ]
 central_auth::pam::min_user_id: 500
+central_auth::pam::access_conf: /etc/security/access.conf
+

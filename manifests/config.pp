@@ -1,9 +1,9 @@
 
 class central_auth::config (
   # Class parameters are populated from External(hiera)/Defaults/Fail
-  String $default_domain,
-  String $admin_server               = hiera( 'central_auth::config::default_domain' ),
-  String $default_realm              = hiera( 'central_auth::config::default_domain' ),
+  String $default_domain             = '',
+  String $admin_server               = lookup( 'central_auth::config::default_domain', String, 'first', '' ),
+  String $default_realm              = lookup( 'central_auth::config::default_domain', String, 'first', '' ),
   Collection $passwd_servers         = [],
   Boolean $dns_lookup_kdc            = true,
   Boolean $dns_lookup_realm          = true,
@@ -23,8 +23,8 @@ class central_auth::config (
   String $ldap_uri                   = '',
   String $user_ou_path               = '',
   String $group_ou_path              = '',
-  String $bind_user                  = '',
-  String $bind_pass                  = hiera( 'central_auth::join_ad::domain_pass','' ),
+  String $bind_user                  = lookup( 'central_auth::join_ad::domain_user', String, 'first', '' ),
+  String $bind_pass                  = lookup( 'central_auth::join_ad::domain_pass', String, 'first', '' ),
 
   String $smb_template               = 'central_auth/smb.conf',
 ) {
@@ -53,6 +53,10 @@ class central_auth::config (
 
 
   if $central_auth::enable_sssd {
+
+    if ! $default_domain {
+      fail("The default domain cannot be empty: central_auth::config::default_domain")
+    }
 
     if $directory_type == "ad" {
       # When connecting to AD, utilise Kerberos and set up Samba client
