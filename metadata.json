@@ -1,16 +1,17 @@
 {
   "name": "qtechnologies-central_auth",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "author": "Q-Technologies",
   "summary": "A Module to manage centralized authentication",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
+  "tags": ["sssd","ldap","AD","Active Directory","PAM","Access","login"],
   "source": "https://github.com/Q-Technologies/puppet-central_auth.git",
   "project_page": "https://github.com/Q-Technologies/puppet-central_auth",
   "issues_url": "https://github.com/Q-Technologies/puppet-central_auth/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_range": ">= 4.24.0"
+      "version_range": ">= 4.24.0 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
