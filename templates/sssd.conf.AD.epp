@@ -7,7 +7,15 @@ config_file_version = 2
 
 [domain/<%= $default_domain.downcase %>]
 debug_level = 9
-ad_domain = <%= $default_domain.downcase %>
+<% if $ad_domain { -%>
+ad_domain = <%= $ad_domain.downcase %>
+<% } -%>
+<% if $ad_server { -%>
+ad_server = <%= $ad_server %>
+<% } -%>
+<% if $ad_backup_server { -%>
+ad_backup_server = <%= $ad_backup_server %>
+<% } -%>
 id_provider = ad
 access_provider = ad
 ldap_id_mapping = <%= $ldap_id_mapping %>

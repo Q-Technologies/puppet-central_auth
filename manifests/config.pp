@@ -3,6 +3,9 @@ class central_auth::config (
   # Class parameters are populated from External(hiera)/Defaults/Fail
   String $default_domain             = '',
   String $admin_server               = lookup( 'central_auth::config::default_domain', String, 'first', '' ),
+  String $ad_domain                  = '',
+  String $ad_server                  = '',
+  String $ad_backup_server           = '',
   String $default_realm              = lookup( 'central_auth::config::default_domain', String, 'first', '' ),
   Collection $passwd_servers         = [],
   Boolean $dns_lookup_kdc            = true,
@@ -146,6 +149,9 @@ class central_auth::config (
       content => epp($sssd_template, {
                                       default_domain        => $default_domain,
                                       admin_server          => $admin_server,
+                                      ad_domain             => $ad_domain,
+                                      ad_server             => $ad_server,
+                                      ad_backup_server      => $ad_backup_server,
                                       ldap_idmap_range_size => $ldap_idmap_range_size,
                                       ldap_id_mapping       => $ldap_id_mapping,
                                       cache_credentials     => $cache_credentials,
