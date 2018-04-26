@@ -1,0 +1,30 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+#
+
+# allow only the groups listed
+<% if $allowed_groups =~ Hash  and !empty($allowed_groups) { -%>
+<%   $allowed_groups.each | $key, $value | { -%>
++ : (<%= $key %>) : <% if $value =~ Array { -%><%= $value.join(' ') %><% } elsif $value =~ String { -%><%= $value %><% } else { -%>ALL<% } %>
+<%   } -%>
+<% } elsif $allowed_groups =~ Array  and !empty($allowed_groups) { -%>
++ : (<%= $allowed_groups.join(') (') %>) : ALL
+<% } elsif $allowed_groups =~ String and !empty($allowed_groups) { -%>
++ : (<%= $allowed_groups %>) : ALL
+<% } -%>
+
+# allow only the users listed
+<% if $allowed_users =~ Hash and !empty($allowed_users) { -%>
+<%   $allowed_users.each | $key, $value | { -%>
++ : <%= $key %> : <% if $value =~ Array { -%><%= $value.join(' ') %><% } elsif $value =~ String { -%><%= $value %><% } else { -%>ALL<% } %>
+<%   } -%>
+<% } elsif $allowed_users =~ Array and !empty($allowed_users) { -%>
++ : <%= $allowed_users.join(' ') %>
+<% } elsif $allowed_users =~ String and !empty($allowed_users) { -%>
++ : <%= $allowed_users %> : ALL
+<% } else { -%>
++ : root : ALL
+<% } -%>
+
+# default deny
+- : ALL : ALL
