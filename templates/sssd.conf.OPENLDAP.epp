@@ -33,7 +33,9 @@ ldap_chpass_uri = <%= split($ldap_uri, ',')[0] %>
 entry_cache_timeout = 600
 ldap_network_timeout = 2
 ldap_group_member = uniquemember
-ldap_tls_cacert = /etc/ssl/certs/twptonpki02vth_issuingCA_Base64.cer
+<% if $ldap_tls_cacert { -%>
+ldap_tls_cacert = <%= $ldap_tls_cacert %>
+<% } -%>
 #This parameter requires that the DC present a completely validated certificate chain. If you're testing or don't care, use 'allow' or 'never'.
 #ldap_tls_reqcert = demand
 ldap_tls_reqcert = allow

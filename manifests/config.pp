@@ -6,6 +6,8 @@ class central_auth::config (
   String $ad_domain                  = '',
   String $ad_server                  = '',
   String $ad_backup_server           = '',
+  String $ad_site_name               = '',
+  Integer $service_ping_timeout      = 60,
   String $default_realm              = lookup( 'central_auth::config::default_domain', String, 'first', '' ),
   Collection $passwd_servers         = [],
   Boolean $dns_lookup_kdc            = true,
@@ -14,9 +16,14 @@ class central_auth::config (
   String $directory_type             = 'ad',
   String $ticket_lifetime            = '2d',
   String $renew_lifetime             = '30d',
+  Boolean $dyndns_update             = true,
+  Integer $dyndns_refresh_interval   = 43200,
+  Boolean $dyndns_update_ptr         = true,
+  Integer $dyndns_ttl                = 3600,
 
   Integer $ldap_idmap_range_size     = 200000,
   Boolean $ldap_id_mapping           = false,
+  Boolean $ldap_tls_cacert           = '',
   Boolean $cache_credentials         = true,
   Boolean $case_sensitive            = false,
   Any $override_shell                = '/bin/bash',
@@ -47,12 +54,10 @@ class central_auth::config (
     } else{
         fail("Unknown directory type: ${directory_type}")
     }
-    #$krb5_template = 'central_auth/krb5.conf.LDAP'
-    $krb5_template = 'central_auth/krb5.conf.AD'
   } else {
     $sssd_template = 'central_auth/sssd.conf.AD'
-    $krb5_template = 'central_auth/krb5.conf.AD'
   }
+  $krb5_template = 'central_auth/krb5.conf.AD'
 
 
   if $central_auth::enable_sssd {
@@ -152,8 +157,12 @@ class central_auth::config (
                                       ad_domain             => $ad_domain,
                                       ad_server             => $ad_server,
                                       ad_backup_server      => $ad_backup_server,
+                                      host_fqdn             => $facts['fqdn'],
+                                      ad_site_name          => $ad_site_name,
+                                      timeout               => $service_ping_timeout,
                                       ldap_idmap_range_size => $ldap_idmap_range_size,
                                       ldap_id_mapping       => $ldap_id_mapping,
+                                      ldap_tls_cacert       => $ldap_tls_cacert,
                                       cache_credentials     => $cache_credentials,
                                       case_sensitive        => $case_sensitive,
                                       override_shell        => $override_shell,
