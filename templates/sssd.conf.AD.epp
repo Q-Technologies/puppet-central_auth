@@ -7,22 +7,22 @@ config_file_version = 2
 
 [domain/<%= $default_domain.downcase %>]
 debug_level = <%= $debug_level %>
-<% if $ad_domain { -%>
+<% if !empty($ad_domain) { -%>
 ad_domain = <%= $ad_domain.downcase %>
 <% } else {-%>
 ad_domain = <%= $default_domain.downcase %>
 <% } -%>
-<% if $ad_server { -%>
+<% if !empty($ad_server) { -%>
 ad_server = <%= $ad_server %>
 <% } -%>
-<% if $ad_backup_server { -%>
+<% if !empty($ad_backup_server) { -%>
 ad_backup_server = <%= $ad_backup_server %>
 <% } -%>
 ad_hostname = <%= $host_fqdn.downcase %>
-<% if $timeout { -%>
+<% if !empty($timeout) { -%>
 timeout = <%= $timeout %>
 <% } -%>
-<% if $ad_site_name { -%>
+<% if !empty($ad_site_name) { -%>
 dns_discovery_domain = <%= $ad_site_name %>._sites.<%= $default_domain.downcase %>
 <% } -%>
 id_provider = ad
@@ -34,24 +34,24 @@ cache_credentials = <%= $cache_credentials %>
 <% if $override_shell { -%>
 override_shell = <%= $override_shell %>
 <% } -%>
-<% if $override_homedir { -%>
+<% if !empty($override_homedir) { -%>
 override_homedir = <%= $override_homedir %>
 <% } -%>
 # Use this until we get version 1.12 of sssd
 case_sensitive = <%= $case_sensitive %>
-<% if $dyndns_update or $dyndns_refresh_interval or $dyndns_update_ptr or $dyndns_ttl { -%>
+<% if $dyndns_update or !empty($dyndns_refresh_interval) or $dyndns_update_ptr or !empty($dyndns_ttl) { -%>
 # Dynamic DNS
 <% } -%>
 <% if $dyndns_update { -%>
 dyndns_update = <%= $dyndns_update %>
 <% } -%>
-<% if $dyndns_refresh_interval { -%>
+<% if !empty($dyndns_refresh_interval) { -%>
 dyndns_refresh_interval = <%= $dyndns_refresh_interval %>
 <% } -%>
 <% if $dyndns_update_ptr { -%>
 dyndns_update_ptr = <%= $dyndns_update_ptr %>
 <% } -%>
-<% if $dyndns_ttl { -%>
+<% if !empty($dyndns_ttl) { -%>
 dyndns_ttl   = <%= $dyndns_ttl %>
 <% } -%>
 
