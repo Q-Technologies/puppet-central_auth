@@ -23,7 +23,7 @@ class central_auth::config (
 
   Integer $ldap_idmap_range_size     = 200000,
   Boolean $ldap_id_mapping           = false,
-  Boolean $ldap_tls_cacert           = '',
+  String $ldap_tls_cacert            = '',
   Boolean $cache_credentials         = true,
   Boolean $case_sensitive            = false,
   Any $override_shell                = '/bin/bash',
