@@ -133,7 +133,11 @@ class central_auth::pam (
       ensure  => file,
       content => epp('central_auth/debian-pam-session-noninteractive', {  enable_sssd => $enable_sssd } ),
     }
-
+    if $enable_pam_access {
+      file { $access_conf:
+        ensure  => file,
+        content => epp('central_auth/access.conf', { allowed_groups => $allowed_groups, allowed_users => $allowed_users } ),
+      }
+    }
   }
-
 }
