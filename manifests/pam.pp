@@ -32,7 +32,16 @@ class central_auth::pam (
 
   #class { 'authconfig': }
 
-  if $::osfamily == 'RedHat' {
+  if $facts['kernel'] == 'Linux' {
+    if $enable_pam_access {
+      file { $access_conf:
+        ensure  => file,
+        content => epp('central_auth/access.conf', { allowed_groups => $allowed_groups, allowed_users => $allowed_users } ),
+      }
+    }
+  }
+
+  if $facts['osfamily'] == 'RedHat' {
     file { [ '/etc/pam.d/system-auth', '/etc/pam.d/password-auth' ] :
       ensure  => file,
       content => epp('central_auth/rhel-pam-auth', {
@@ -47,13 +56,7 @@ class central_auth::pam (
                                                     min_user_id       => $min_user_id,
                                                   } ),
     }
-    if $enable_pam_access {
-      file { $access_conf:
-        ensure  => file,
-        content => epp('central_auth/access.conf', { allowed_groups => $allowed_groups, allowed_users => $allowed_users } ),
-      }
-    }
-  } elsif $::osfamily == 'Suse' {
+  } elsif $facts['osfamily'] == 'Suse' {
     file { '/etc/pam.d/common-password':
       ensure  => file,
       content => epp('central_auth/suse-pam-password', {
@@ -104,7 +107,7 @@ class central_auth::pam (
                                                         minlen      => $minlen,
                                                       } ),
     }
-  } elsif $::osfamily == 'Debian' {
+  } elsif $facts['osfamily'] == 'Debian' {
     file { '/etc/pam.d/login':
       ensure  => file,
       content => epp('central_auth/debian-pam-login', {} ),
@@ -132,12 +135,6 @@ class central_auth::pam (
     file { '/etc/pam.d/common-session-noninteractive':
       ensure  => file,
       content => epp('central_auth/debian-pam-session-noninteractive', {  enable_sssd => $enable_sssd } ),
-    }
-    if $enable_pam_access {
-      file { $access_conf:
-        ensure  => file,
-        content => epp('central_auth/access.conf', { allowed_groups => $allowed_groups, allowed_users => $allowed_users } ),
-      }
     }
   }
 }

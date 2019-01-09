@@ -4,47 +4,47 @@
   "author": "Q-Technologies",
   "summary": "A Module to manage centralized authentication",
   "license": "Apache-2.0",
-  "tags": ["sssd","ldap","AD","Active Directory","PAM","Access","login"],
   "source": "https://github.com/Q-Technologies/puppet-central_auth.git",
   "project_page": "https://github.com/Q-Technologies/puppet-central_auth",
   "issues_url": "https://github.com/Q-Technologies/puppet-central_auth/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_range": ">= 4.24.0 < 5.0.0"
+      "version_requirement": ">= 5.0.0 < 6.0.0"
     }
   ],
+  "data_provider": "hiera",
   "operatingsystem_support": [
     {
-      "operatingsystem":"RedHat",
+      "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "6.0",
         "7.0"
       ]
     },
     {
-      "operatingsystem":"Centos",
+      "operatingsystem": "Centos",
       "operatingsystemrelease": [
         "6.0",
         "7.0"
       ]
     },
     {
-      "operatingsystem":"OEL",
+      "operatingsystem": "OEL",
       "operatingsystemrelease": [
         "6.0",
         "7.0"
       ]
     },
     {
-      "operatingsystem":"SLES",
+      "operatingsystem": "SLES",
       "operatingsystemrelease": [
         "11.0",
         "12.0"
       ]
     },
     {
-      "operatingsystem":"Ubuntu",
+      "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "12.04",
         "14.04",
@@ -52,6 +52,22 @@
       ]
     }
   ],
-  "data_provider": "hiera"
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 7.0.0"
+    }
+  ],
+  "tags": [
+    "sssd",
+    "ldap",
+    "AD",
+    "Active Directory",
+    "PAM",
+    "Access",
+    "login"
+  ],
+  "pdk-version": "1.7.1",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.7.1-0-g810b982"
 }
-
