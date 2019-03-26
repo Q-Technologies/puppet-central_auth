@@ -1,6 +1,7 @@
 # Configuration for the central_auth  module
 class central_auth::config (
   # Class parameters are populated from External(hiera)/Defaults/Fail
+  String $ad_gpo_access_control,
   String $default_domain             = '',
   String $admin_server               = lookup( 'central_auth::config::default_domain', String, 'first', '' ),
   String $ad_domain                  = '',
@@ -157,6 +158,7 @@ class central_auth::config (
                                       ad_domain               => $ad_domain,
                                       ad_server               => $ad_server,
                                       ad_backup_server        => $ad_backup_server,
+                                      ad_gpo_access_control   => $ad_gpo_access_control,
                                       host_fqdn               => $facts['fqdn'],
                                       ad_site_name            => $ad_site_name,
                                       timeout                 => $service_ping_timeout,
