@@ -52,6 +52,13 @@ class central_auth::join_ad (
         notify      => Service['sssd'],
       }
     }
+
+    if $facts['os']['family'] == "Suse" {
+      file { "/run/user/0/krb5cc":
+        ensure => directory,
+        before => Exec['first kinit'],
+      }
+    }
   }
 
 }
