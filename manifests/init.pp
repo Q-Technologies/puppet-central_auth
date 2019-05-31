@@ -10,19 +10,19 @@ class central_auth (
 
   case $facts['osfamily'] {
     'Suse': {
-      if ($::operatingsystemmajrelease + 0) < 11 {
+      if Numeric($::operatingsystemmajrelease) < 11 {
         fail("Wrong SLES version, should be 11 or greater than 11, not ${::operatingsystemmajrelease}")
       }
     }
     'RedHat': {
-      if ($::operatingsystemmajrelease + 0) < 6 {
+      if Numeric($::operatingsystemmajrelease) < 6 {
         fail("Wrong RedHat version, should be 6 or greater than 6, not ${::operatingsystemmajrelease}")
       }
     }
     'Debian': {
-      if ($::operatingsystemmajrelease + 0) < 7 and $facts['operatingsystem'] == 'Debian' {
+      if Numeric($::operatingsystemmajrelease) < 7 and $facts['operatingsystem'] == 'Debian' {
         fail("Wrong Debian version, should be 7 or greater than 7, not ${::operatingsystemmajrelease}")
-      } elsif ($::operatingsystemmajrelease + 0) < 12 and $facts['operatingsystem'] == 'Ubuntu' {
+      } elsif Numeric($::operatingsystemmajrelease) < 12 and $facts['operatingsystem'] == 'Ubuntu' {
         fail("Wrong Debian version, should be 12 or greater than 12, not ${::operatingsystemmajrelease}")
       }
     }

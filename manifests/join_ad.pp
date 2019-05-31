@@ -53,8 +53,8 @@ class central_auth::join_ad (
       }
     }
 
-    if $facts['os']['family'] == "Suse" {
-      file { "/run/user/0/krb5cc":
+    if $facts['os']['family'] == 'Suse' {
+      file { ['/run','/run/user','/run/user/0','/run/user/0/krb5cc']:
         ensure => directory,
         before => Exec['first kinit'],
       }
