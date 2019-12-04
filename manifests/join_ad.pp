@@ -5,10 +5,13 @@ class central_auth::join_ad (
   String $domain_user = '',
   String $domain_pass = '',
   String $domain_ou = '',
-
+  String $default_domain = lookup( 'central_auth::config::default_domain', String, 'first', '' ),
 ) {
 
   include stdlib;
+
+  $domain_components = split($default_domain, '[.]')
+  $full_ou = join([$domain_ou, ',DC=', join($domain_components, ',DC=')], '')
 
   if $central_auth::enable_sssd and $central_auth::config::directory_type == 'ad' {
 
@@ -25,20 +28,36 @@ class central_auth::join_ad (
       mode    => '0755',
       content => epp('central_auth/kinit_wrapper.py', { default_realm => $central_auth::config::default_realm } ),
     }
+
     # Run kinit command
-    -> exec { 'first kinit':
+    exec { 'first kinit':
       path        => '/usr/bin:/usr/sbin:/bin:/sbin',
       environment => [ "DOMAIN_USER=${domain_user}", "DOMAIN_PASS=${domain_pass}" ],
       unless      => "bash -c 'id ${domain_user} && /usr/bin/klist' >/dev/null 2>&1",
       command     => '/usr/local/sbin/kinit_wrapper.py',
+      require     => File['/usr/local/sbin/kinit_wrapper.py'],
     }
-    # Run net join command
-    -> exec { 'net join':
-      path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-      unless      => '/usr/bin/net ads testjoin -k >/dev/null 2>&1',
-      environment => [ "DOMAIN_USER=${domain_user}", "DOMAIN_PASS=${domain_pass}" ],
-      command     => "/usr/bin/net ads join createcomputer=\"${domain_ou}\" -U \$DOMAIN_USER%\$DOMAIN_PASS 2>&1",
-      notify      => Service['sssd'],
+
+    # Run kinit command
+    if ( $::osfamily == 'RedHat' and ($::operatingsystemmajrelease + 0) > 6 ) {
+      exec { 'net join':
+        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+        unless      => "/sbin/adcli testjoin --domain=${default_domain} >/dev/null 2>&1",
+        environment => [ "DOMAIN_USER=${domain_user}", "DOMAIN_PASS=${domain_pass}" ],
+        command     => "/sbin/adcli join --login-ccache  --domain-ou=${full_ou}  ${default_domain} 2>&1",
+        notify      => Service['sssd'],
+        require     => Exec['first kinit'],
+      }
+    } else {
+      # RHEL 6 and SuSE
+      exec { 'net join':
+        path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+        unless      => '/usr/bin/net ads testjoin -k >/dev/null 2>&1',
+        environment => [ "DOMAIN_USER=${domain_user}", "DOMAIN_PASS=${domain_pass}" ],
+        command     => "/usr/bin/net ads join createcomputer=\"${domain_ou}\" -U \$DOMAIN_USER%\$DOMAIN_PASS 2>&1",
+        notify      => Service['sssd'],
+        require     => Exec['first kinit'],
+      }
     }
 
     # Obtain Kerboros ticket based on hostname
