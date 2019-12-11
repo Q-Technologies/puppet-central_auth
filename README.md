@@ -12,6 +12,7 @@
   * [General](#general)
   * [SSSD](#sssd)
   * [PAM Access](#pam-access)
+  * [PAM Files](#pam-files)
 * [Reference](#reference)
   * [SSSD](#sssd-1)
   * [PAM Access](#pam-access-1)
@@ -53,7 +54,7 @@ When PAM access is activated:
 
 * `/etc/security/access.conf` - replaces file when PAM access enabled
 
-Always:
+When managing PAM files:
 
 * `/etc/pam.d/*` - full manages some files (depends on OS)
 
@@ -135,6 +136,8 @@ and `/etc/security/access.conf` is populated according to the Hiera data in scop
 ```
 # This defaults to false if not specified
 central_auth::enable_pam_access: true
+# This defaults to true if not specified - required for PAM access to work reliably
+central_auth::manage_pam_files: true
 # Restrict access to the system by AD/LDAP/local group
 central_auth::pam::allowed_groups:
   - unix_admins
@@ -152,6 +155,15 @@ central_auth::pam::allowed_users:
     - 'tty6'
     - 'LOCAL'
   matt: ALL
+```
+
+### PAM Files
+
+Most PAM files are normally managed, but can be turned off with the `manage_pam_files` option.
+
+```
+# This defaults to true if not specified
+central_auth::manage_pam_files: true
 ```
 
 ## Reference
