@@ -6,6 +6,7 @@ class central_auth (
   Boolean $manage_auth                = false,
   Boolean $enable_sssd                = true,
   Boolean $enable_pam_access          = false,
+  Boolean $manage_pam_files           = true,
 ) {
 
   case $facts['osfamily'] {
