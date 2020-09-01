@@ -126,6 +126,7 @@ Here are some optional settings:
 central_auth::pam::min_user_id: 400
 central_auth::config::override_homedir: false
 central_auth::config::override_shell: false
+central_auth::config::ad_gpo_access_control: permissive
 
 ```
 ### PAM Access
