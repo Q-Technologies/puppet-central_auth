@@ -1,6 +1,6 @@
 {
   "name": "qtechnologies-central_auth",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Q-Technologies",
   "summary": "A Module to manage centralized authentication",
   "license": "Apache-2.0",
