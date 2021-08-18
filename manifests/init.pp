@@ -16,7 +16,7 @@ class central_auth (
       }
     }
     'RedHat': {
-      if Numeric($::operatingsystemmajrelease) < 6 {
+      if Numeric($::operatingsystemmajrelease) < 6 and $facts['operatingsystem'] != 'Amazon' {
         fail("Wrong RedHat version, should be 6 or greater than 6, not ${::operatingsystemmajrelease}")
       }
     }
