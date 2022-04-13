@@ -1,6 +1,6 @@
 {
   "name": "qtechnologies-central_auth",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Q-Technologies",
   "summary": "A Module to manage centralized authentication",
   "license": "Apache-2.0",
@@ -70,7 +70,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.7.0 < 7.0.0"
+      "version_requirement": ">= 4.7.0 < 8.0.0"
     }
   ],
   "tags": [
@@ -82,7 +82,7 @@
     "Access",
     "login"
   ],
-  "pdk-version": "2.2.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#2.2.0",
-  "template-ref": "tags/2.2.0-0-g2381db6"
+  "pdk-version": "2.4.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#2.4.0",
+  "template-ref": "tags/2.4.0-0-gfa6b6d2"
 }
